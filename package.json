@@ -9,7 +9,9 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepare": "husky"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.11.0",
@@ -33,6 +35,7 @@
     "eslint-config-next": "14.2.4",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-react": "7.34.3",
+    "husky": "^9.1.1",
     "jsdom": "^24.1.1",
     "postcss": "^8",
     "prettier": "3.3.2",
