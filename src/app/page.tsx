@@ -1,7 +1,3 @@
-export default function Home() {
-  return (
-    <div>
-      <button className="btn">dupa</button>
-    </div>
-  );
-}
+import { LandingPage } from '@/views/landing-page';
+
+export default LandingPage;
