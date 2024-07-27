@@ -25,7 +25,7 @@ describe('FormInput', () => {
   });
 
   it('displays error message when provided', () => {
-    render(<FormInput label="Username" errorMessage="Username is required" />);
+    render(<FormInput label="Username" errors="Username is required" />);
     expect(screen.getByText('Username is required')).toBeTruthy();
   });
 

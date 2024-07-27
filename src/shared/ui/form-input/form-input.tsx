@@ -2,14 +2,14 @@ import { InputHTMLAttributes } from 'react';
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  errorMessage?: string;
+  errors?: string;
 }
 
 export const FormInput = ({
   label,
   type,
   placeholder,
-  errorMessage,
+  errors,
   ...rest
 }: FormInputProps) => {
   return (
@@ -23,9 +23,9 @@ export const FormInput = ({
         className="input input-bordered w-full"
         {...rest}
       />
-      {errorMessage && (
+      {errors && (
         <div className="label">
-          <span className="label-text-alt text-error">{errorMessage}</span>
+          <span className="label-text-alt text-error">{errors}</span>
         </div>
       )}
     </label>
