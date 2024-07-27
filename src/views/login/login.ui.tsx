@@ -1,6 +1,6 @@
 'use server';
 
-import { FormInput } from '@/shared/ui/form-input/form-input';
+import { FormInput } from '@/shared/ui/form-input';
 import { login, signup } from './login.api';
 
 export async function LoginPage() {

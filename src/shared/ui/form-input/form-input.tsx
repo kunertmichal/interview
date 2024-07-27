@@ -10,6 +10,7 @@ export const FormInput = ({
   type,
   placeholder,
   errorMessage,
+  ...rest
 }: FormInputProps) => {
   return (
     <label className="form-control w-full">
@@ -20,6 +21,7 @@ export const FormInput = ({
         type={type}
         placeholder={placeholder}
         className="input input-bordered w-full"
+        {...rest}
       />
       {errorMessage && (
         <div className="label">
