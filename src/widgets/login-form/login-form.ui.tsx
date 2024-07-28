@@ -11,15 +11,12 @@ import { Alert } from '@/shared/ui/alert';
 export const LoginForm = () => {
   const [lastResult, action] = useFormState(login, undefined);
   const [form, fields] = useForm({
-    // Sync the result of last submission
     lastResult,
 
-    // Reuse the validation logic on the client
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: loginSchema });
     },
 
-    // Validate the form on blur event triggered
     shouldValidate: 'onBlur',
     shouldRevalidate: 'onInput',
   });

@@ -1,14 +1,14 @@
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
-import { createClient } from '@/shared/utils/supabase/client';
-import { loginSchema } from './login-form.model';
 import { SubmissionResult } from '@conform-to/react';
+import { createClient } from '@/shared/utils/supabase/client';
+import { signupSchema } from './signup-form.model';
 
-export async function login(_: unknown, formData: FormData) {
+export async function signup(_: unknown, formData: FormData) {
   const supabase = createClient();
 
   const submission = parseWithZod(formData, {
-    schema: loginSchema,
+    schema: signupSchema,
   });
 
   if (submission.status !== 'success') {
@@ -20,16 +20,16 @@ export async function login(_: unknown, formData: FormData) {
     password: submission.value.password,
   };
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { error } = await supabase.auth.signUp(data);
 
   if (error) {
     return {
       status: 'error',
       error: {
-        form: ['Invalid credentials'],
+        form: ['Unable to create account'],
       },
     } as SubmissionResult<string[]>;
   }
 
-  redirect('/dashboard');
+  redirect('/');
 }
