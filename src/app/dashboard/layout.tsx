@@ -20,7 +20,7 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen">
       <nav className="flex">
-        <div className="container flex gap-4 mx-auto py-2 px-4">
+        <div className="container flex gap-4 mx-auto p-4 text-lg">
           <h1>
             <Image src={logoSvg} alt="Logo" width={32} height={32} />
           </h1>
