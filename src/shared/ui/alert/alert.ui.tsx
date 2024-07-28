@@ -1,5 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/utils/misc';
+import { HTMLAttributes } from 'react';
 
 const alert = cva('alert', {
   variants: {
@@ -10,15 +11,29 @@ const alert = cva('alert', {
       info: 'alert-info',
     },
   },
+  defaultVariants: {
+    variant: 'info',
+  },
 });
 
-export interface AlertProps extends VariantProps<typeof alert> {
+export interface AlertProps
+  extends HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof alert> {
   children: React.ReactNode;
 }
 
-export const Alert = ({ children, variant }: AlertProps) => {
+export const Alert = ({
+  children,
+  variant,
+  className,
+  ...props
+}: AlertProps) => {
   return (
-    <div role="alert" className={cn('alert', alert({ variant }))}>
+    <div
+      role="alert"
+      className={cn('alert', alert({ variant }), className)}
+      {...props}
+    >
       <span>{children}</span>
     </div>
   );

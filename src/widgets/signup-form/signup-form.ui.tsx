@@ -7,6 +7,7 @@ import { FormInput } from '@/shared/ui/form-input';
 import { signupSchema } from './signup-form.model';
 import { signup } from './signup-form.api';
 import { Alert } from '@/shared/ui/alert';
+import { Button } from '@/shared/ui/button';
 
 export const SignUpForm = () => {
   const [lastResult, action] = useFormState(signup, undefined);
@@ -55,9 +56,9 @@ export const SignUpForm = () => {
           errors={fields.confirmPassword.errors?.join(', ')}
         />
         <div className="mt-6">
-          <button className="btn btn-secondary" type="submit">
+          <Button variant="secondary" type="submit">
             Sign up
-          </button>
+          </Button>
         </div>
       </form>
     </>

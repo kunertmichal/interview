@@ -30,4 +30,10 @@ describe('Alert', () => {
     const alertElement = screen.getByRole('alert');
     expect(alertElement.className).toContain('alert-info');
   });
+
+  it('renders with children', () => {
+    render(<Alert variant="info">Info message</Alert>);
+    const alertElement = screen.getByRole('alert');
+    expect(alertElement.textContent).toBe('Info message');
+  });
 });

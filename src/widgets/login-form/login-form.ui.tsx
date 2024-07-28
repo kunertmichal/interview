@@ -7,6 +7,7 @@ import { FormInput } from '@/shared/ui/form-input';
 import { login } from './login-form.api';
 import { loginSchema } from './login-form.model';
 import { Alert } from '@/shared/ui/alert';
+import { Button } from '@/shared/ui/button';
 
 export const LoginForm = () => {
   const [lastResult, action] = useFormState(login, undefined);
@@ -48,9 +49,7 @@ export const LoginForm = () => {
           errors={fields.password.errors?.join(', ')}
         />
         <div className="mt-6">
-          <button className="btn btn-primary" type="submit">
-            Log in
-          </button>
+          <Button type="submit">Log in</Button>
         </div>
       </form>
     </>
