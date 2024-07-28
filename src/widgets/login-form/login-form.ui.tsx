@@ -6,6 +6,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { FormInput } from '@/shared/ui/form-input';
 import { login } from './login-form.api';
 import { loginSchema } from './login-form.model';
+import { Alert } from '@/shared/ui/alert';
 
 export const LoginForm = () => {
   const [lastResult, action] = useFormState(login, undefined);
@@ -34,9 +35,7 @@ export const LoginForm = () => {
         className="flex flex-col gap-4"
       >
         {lastResult?.status === 'error' && lastResult?.error && (
-          <div role="alert" className="alert alert-error">
-            <span>{lastResult.error.form}</span>
-          </div>
+          <Alert variant="error">{lastResult.error.form}</Alert>
         )}
         <FormInput
           label="What is your email?"
