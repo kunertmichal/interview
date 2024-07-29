@@ -10,6 +10,9 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
+    STAGING_DB_PASSWORD: z.string(),
+    STAGING_PROJECT_ID: z.string(),
+    SUPABASE_ACCESS_TOKEN: z.string(),
   },
 
   /**
@@ -28,6 +31,9 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    STAGING_DB_PASSWORD: process.env.STAGING_DB_PASSWORD,
+    STAGING_PROJECT_ID: process.env.STAGING_PROJECT_ID,
+    SUPABASE_ACCESS_TOKEN: process.env.SUPABASE_ACCESS_TOKEN,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   },
