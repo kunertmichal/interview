@@ -36,6 +36,18 @@ export const SignUpForm = () => {
           <Alert variant="error">{lastResult.error.form}</Alert>
         )}
         <FormInput
+          label="What is your first name?"
+          key={fields.firstName.key}
+          name={fields.firstName.name}
+          errors={fields.firstName.errors?.join(', ')}
+        />
+        <FormInput
+          label="What is last name?"
+          key={fields.lastName.key}
+          name={fields.lastName.name}
+          errors={fields.lastName.errors?.join(', ')}
+        />
+        <FormInput
           label="What is your email?"
           key={fields.email.key}
           name={fields.email.name}

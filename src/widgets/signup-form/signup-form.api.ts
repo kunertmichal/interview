@@ -15,12 +15,17 @@ export async function signup(_: unknown, formData: FormData) {
     return submission.reply();
   }
 
-  const data = {
+  const { error } = await supabase.auth.signUp({
     email: submission.value.email,
     password: submission.value.password,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
+    options: {
+      data: {
+        email: submission.value.email,
+        first_name: submission.value.firstName,
+        last_name: submission.value.lastName,
+      },
+    },
+  });
 
   if (error) {
     return {
@@ -31,5 +36,5 @@ export async function signup(_: unknown, formData: FormData) {
     } as SubmissionResult<string[]>;
   }
 
-  redirect('/');
+  redirect('/dashboard');
 }
