@@ -19,7 +19,7 @@ export const OrganizationPage = async () => {
     .select(
       `
       organization_id,
-      organizations!profiles_organization_id_fkey (
+      organization: organizations!profiles_organization_id_fkey (
         id,
         name
       )
@@ -32,16 +32,18 @@ export const OrganizationPage = async () => {
     console.error('Unable to fetch user organizations', error);
   }
 
-  const { organization_id, organizations } = data || {};
+  const { organization_id, organization } = data || {};
 
   return (
     <div>
       <h2 className="text-2xl font-semibold">Organisation management</h2>
-      {organization_id ? (
-        <div>{JSON.stringify(organizations)}</div>
-      ) : (
-        <CreateOrganization ownerId={user.id} />
-      )}
+      <div className="mt-8">
+        {organization_id ? (
+          <div>{JSON.stringify(organization)}</div>
+        ) : (
+          <CreateOrganization ownerId={user.id} />
+        )}
+      </div>
     </div>
   );
 };
