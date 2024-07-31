@@ -4,6 +4,7 @@ import logoSvg from '@/app/logo.svg';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
 import { SignOut } from '@/widgets/sign-out';
+import { NotificationDropdown } from '@/widgets/notification-dropdown';
 
 export default async function DashboardLayout({
   children,
@@ -33,6 +34,7 @@ export default async function DashboardLayout({
             </li>
           </ul>
           <SignOut />
+          <NotificationDropdown userId={data.user.id} />
         </div>
       </nav>
       <div className="container mx-auto px-4">{children}</div>

@@ -9,6 +9,12 @@ const button = cva('button', {
       secondary: 'btn-secondary',
       success: 'btn-success',
       error: 'btn-error',
+      ghost: 'btn-ghost',
+      link: 'btn-link',
+    },
+    shape: {
+      square: 'btn-square',
+      circle: 'btn-circle',
     },
   },
   defaultVariants: {
@@ -25,11 +31,15 @@ export interface ButtonProps
 export function Button({
   children,
   variant,
+  shape,
   className,
   ...props
 }: ButtonProps) {
   return (
-    <button className={cn(button({ variant }), className, 'btn')} {...props}>
+    <button
+      className={cn(button({ variant, shape }), className, 'btn')}
+      {...props}
+    >
       {children}
     </button>
   );
