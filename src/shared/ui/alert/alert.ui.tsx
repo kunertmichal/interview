@@ -1,6 +1,7 @@
+import { HTMLAttributes } from 'react';
+import { CircleAlert, CircleCheck, Info, TriangleAlert } from 'lucide-react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/shared/utils/misc';
-import { HTMLAttributes } from 'react';
 
 const alert = cva('alert', {
   variants: {
@@ -16,6 +17,13 @@ const alert = cva('alert', {
   },
 });
 
+const icons = {
+  success: CircleCheck,
+  error: CircleAlert,
+  warning: TriangleAlert,
+  info: Info,
+} as const;
+
 export interface AlertProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alert> {
@@ -28,12 +36,15 @@ export const Alert = ({
   className,
   ...props
 }: AlertProps) => {
+  const Icon = variant ? icons[variant] : icons.info;
+
   return (
     <div
       role="alert"
       className={cn('alert', alert({ variant }), className)}
       {...props}
     >
+      <Icon />
       <span>{children}</span>
     </div>
   );
