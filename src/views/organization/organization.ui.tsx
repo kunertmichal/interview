@@ -5,31 +5,43 @@ import { CreateOrganization } from '@/widgets/organization/create-organization';
 export const OrganizationPage = async () => {
   const supabase = createClient();
 
-  const { data: userData, error } = await supabase.auth.getUser();
-  const { data: profileData } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userData.user?.id)
-    .maybeSingle();
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
 
-  if (error || !userData) {
+  if (userError || !user) {
     redirect('/login');
   }
 
-  const organizationId = profileData?.organization_id;
+  const { data, error } = await supabase
+    .from('profiles')
+    .select(
+      `
+      organization_id,
+      organizations!profiles_organization_id_fkey (
+        id,
+        name
+      )
+    `
+    )
+    .eq('id', user.id)
+    .single();
+
+  if (error) {
+    console.error('Unable to fetch user organizations', error);
+  }
+
+  const { organization_id, organizations } = data || {};
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold">Organisation mnagement</h2>
-      <ul>
-        <li>tabela userow if owner</li>
-        <li>user management w tabeli</li>
-        <li>delete organisation if owner</li>
-        <li>jesli jest organisation member to wyswietl nazwe</li>
-        <li>jesli jest organisation member to wyswietl leave organisation</li>
-        <li>data: {JSON.stringify(organizationId)}</li>
-      </ul>
-      {!organizationId && <CreateOrganization ownerId={userData.user.id} />}
+      <h2 className="text-2xl font-semibold">Organisation management</h2>
+      {organization_id ? (
+        <div>{JSON.stringify(organizations)}</div>
+      ) : (
+        <CreateOrganization ownerId={user.id} />
+      )}
     </div>
   );
 };

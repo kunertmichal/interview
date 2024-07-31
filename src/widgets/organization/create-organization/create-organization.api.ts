@@ -23,11 +23,9 @@ export async function createOrganization(_: unknown, formData: FormData) {
   };
 
   const { error } = await supabase.rpc('create_organization_and_assign', {
-    p_name: data.name,
-    p_profile_id: data.ownerId,
+    name: data.name,
+    owner_id: data.ownerId,
   });
-
-  revalidatePath('/dashboard/organisation');
 
   if (error) {
     console.log(error);
@@ -38,6 +36,7 @@ export async function createOrganization(_: unknown, formData: FormData) {
       },
     } as SubmissionResult<string[]>;
   } else {
+    revalidatePath('/dashboard/organisation');
     return {
       status: 'success',
     } as SubmissionResult<string[]>;

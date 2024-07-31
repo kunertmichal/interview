@@ -7,6 +7,7 @@ import { createOrganizationSchema } from './create-organization.model';
 import { createOrganization } from './create-organization.api';
 import { FormInput } from '@/shared/ui/form-input';
 import { Button } from '@/shared/ui/button';
+import { Alert } from '@/shared/ui/alert';
 
 export const CreateOrganization = ({ ownerId }: { ownerId: string }) => {
   const [lastResult, action] = useFormState(createOrganization, undefined);
@@ -22,18 +23,18 @@ export const CreateOrganization = ({ ownerId }: { ownerId: string }) => {
   });
 
   return (
-    <div>
-      <form
-        id={form.id}
-        onSubmit={form.onSubmit}
-        action={action}
-        noValidate
-        className="max-w-md"
-      >
+    <div className="max-w-md">
+      {lastResult?.status === 'error' && lastResult?.error && (
+        <Alert variant="error" className="mb-4">
+          {lastResult.error.form}
+        </Alert>
+      )}
+      <form id={form.id} onSubmit={form.onSubmit} action={action} noValidate>
         <FormInput
           label="Organization name"
           key={fields.name.key}
           name={fields.name.name}
+          defaultValue={fields.name.initialValue}
           errors={fields.name.errors?.join(', ')}
         />
         <input
