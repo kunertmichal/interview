@@ -1,9 +1,9 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import logoSvg from '@/app/logo.svg';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
 import { SignOut } from '@/widgets/sign-out';
-import Link from 'next/link';
 
 export default async function DashboardLayout({
   children,
@@ -29,7 +29,7 @@ export default async function DashboardLayout({
               <Link href="/dashboard/team">Team</Link>
             </li>
             <li>
-              <Link href="/dashboard/organisation">Organisation</Link>
+              <Link href="/dashboard/organization">Organization</Link>
             </li>
           </ul>
           <SignOut />
