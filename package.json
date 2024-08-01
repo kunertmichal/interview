@@ -12,7 +12,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "prepare": "husky",
-    "migrate": "npx supabase db diff --use-migra -f"
+    "migrate": "npx supabase db diff --use-migra -f",
+    "typegen": "npx supabase gen types typescript --local > src/shared/types/database.ts"
   },
   "dependencies": {
     "@conform-to/react": "^1.1.5",

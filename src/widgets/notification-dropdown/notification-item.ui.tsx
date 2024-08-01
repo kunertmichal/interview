@@ -1,7 +1,5 @@
-import { type Notification } from './';
-
 export type NotificationItemProps = {
-  notification: Notification;
+  notification: TNotification;
 };
 
 export const NotificationItem = ({ notification }: NotificationItemProps) => {

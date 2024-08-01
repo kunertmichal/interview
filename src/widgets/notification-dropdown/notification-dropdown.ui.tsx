@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Bell } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { createClient } from '@/shared/utils/supabase/client';
-import { Bell } from 'lucide-react';
-import { NotificationItem, Notification } from './';
 import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
+import { NotificationItem } from './notification-item.ui';
 
 export const NotificationDropdown = ({ userId }: { userId: string }) => {
   const supabase = createClient();
 
-  const [data, setData] = useState<Array<Notification>>([]);
+  const [data, setData] = useState<Array<TNotification>>([]);
   const [error, setError] = useState<any>(null);
 
   const canDisplayNotifications = data && !error;
@@ -20,7 +20,7 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
   );
 
   const handleInserts = (
-    payload: RealtimePostgresInsertPayload<Notification>
+    payload: RealtimePostgresInsertPayload<TNotification>
   ) => {
     setData((prev) => [payload.new, ...prev]);
   };
@@ -38,7 +38,7 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
         }
       });
 
-    supabase
+    const channel = supabase
       .channel('notifications')
       .on(
         'postgres_changes',
@@ -46,6 +46,10 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
         handleInserts
       )
       .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [supabase, userId]);
 
   return (
@@ -54,17 +58,19 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
         <Button variant="ghost" shape="circle">
           <Bell />
         </Button>
-
         {hasUnreadNotifications && (
           <div className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500" />
         )}
       </div>
+
       {error && <div>Error fetching notifications</div>}
+
       {emptyState && (
         <div className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-64">
           No notifications
         </div>
       )}
+
       {canDisplayNotifications && (
         <ul
           tabIndex={0}
