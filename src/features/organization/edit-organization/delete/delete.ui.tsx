@@ -32,7 +32,7 @@ export const DeleteOrganization = ({
 
   return (
     <div>
-      <h3 className="text-xl font-semibold text-white">Delete Organization</h3>
+      <h3 className="text-xl font-semibold text-white">Delete</h3>
       <p className="text-sm mb-4">
         To delete your organization, provide its name below and confirm
       </p>

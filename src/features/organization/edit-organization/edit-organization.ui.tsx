@@ -26,6 +26,7 @@ export const EditOrganization = ({
       )}
     >
       <div className="flex flex-col gap-8">
+        <h3 className="text-3xl font-semibold text-white">Edit Organization</h3>
         <Rename organizationId={organizationId} />
         <DeleteOrganization
           organizationId={organizationId}

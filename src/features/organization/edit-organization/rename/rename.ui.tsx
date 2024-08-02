@@ -28,7 +28,7 @@ export const Rename = ({ organizationId }: RenameProps) => {
 
   return (
     <div>
-      <h3 className="text-xl font-semibold text-white">Edit Organization</h3>
+      <h3 className="text-xl font-semibold text-white">Edit</h3>
       <p className="text-sm mb-4">Change the name of your organization</p>
       {lastResult?.status === 'error' && lastResult?.error && (
         <Alert variant="error" className="mb-4">
