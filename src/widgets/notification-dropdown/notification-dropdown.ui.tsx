@@ -53,7 +53,7 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
   }, [supabase, userId]);
 
   return (
-    <div className="dropdown dropdown-end">
+    <div className="dropdown dropdown-end relative z-10">
       <div className="relative">
         <Button variant="ghost" shape="circle">
           <Bell />

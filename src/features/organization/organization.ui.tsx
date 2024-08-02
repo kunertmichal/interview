@@ -2,7 +2,7 @@ import { Button } from '@/shared/ui/button';
 import { Table } from '@/shared/ui/table';
 import { CellConfig } from '@/shared/ui/table/table.ui';
 import { createClient } from '@/shared/utils/supabase/server';
-import { Settings } from 'lucide-react';
+import { EditOrganization } from '@/widgets/organization/edit-organization';
 
 export type OrganizationProps = {
   isOwner: boolean;
@@ -50,32 +50,7 @@ export const Organization = async ({
         <h2 className="text-2xl font-semibold">Organisation management</h2>
         <div className="ml-auto flex gap-2">
           <Button>Invite members</Button>
-          <div className="drawer drawer-end">
-            <input
-              id="settings-drawer"
-              type="checkbox"
-              className="drawer-toggle"
-            />
-            <div className="drawer-content">
-              <label
-                htmlFor="settings-drawer"
-                className="drawer-button btn btn-secondary btn-square"
-              >
-                <Settings />
-              </label>
-            </div>
-            <div className="drawer-side z-10">
-              <label
-                htmlFor="settings-drawer"
-                aria-label="close sidebar"
-                className="drawer-overlay"
-              ></label>
-              <div className="bg-base-200 text-base-content min-h-full w-80 p-4">
-                <li>rename organization</li>
-                <li>usunięcie organization</li>
-              </div>
-            </div>
-          </div>
+          <EditOrganization />
         </div>
       </div>
       {/* <div>invite users</div>
