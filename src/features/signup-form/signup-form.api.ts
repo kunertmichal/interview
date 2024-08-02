@@ -1,7 +1,9 @@
+'use server';
+
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
 import { SubmissionResult } from '@conform-to/react';
-import { createClient } from '@/shared/utils/supabase/client';
+import { createClient } from '@/shared/utils/supabase/server';
 import { signupSchema } from './signup-form.model';
 
 export async function signup(_: unknown, formData: FormData) {

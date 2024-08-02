@@ -50,7 +50,7 @@ export const Organization = async ({
         <h2 className="text-2xl font-semibold">Organisation management</h2>
         <div className="ml-auto flex gap-2">
           <Button>Invite members</Button>
-          <EditOrganization />
+          <EditOrganization organizationId={organizationId} />
         </div>
       </div>
       {/* <div>invite users</div>
