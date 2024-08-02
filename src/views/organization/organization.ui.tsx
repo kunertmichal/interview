@@ -34,13 +34,17 @@ export const OrganizationPage = async () => {
     console.error('Unable to fetch user organizations', error);
   }
 
-  const { organization_id, organization } = data || {};
+  const { organization } = data || {};
   const isOwner = user.id === organization?.owner_id;
 
   return (
     <div>
-      {organization_id ? (
-        <Organization isOwner={isOwner} organizationId={organization_id} />
+      {organization ? (
+        <Organization
+          isOwner={isOwner}
+          organizationId={organization.id}
+          organizationName={organization.name}
+        />
       ) : (
         <CreateOrganization ownerId={user.id} />
       )}

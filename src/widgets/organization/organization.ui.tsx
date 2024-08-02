@@ -7,11 +7,13 @@ import { EditOrganization } from '@/features/organization/edit-organization';
 export type OrganizationProps = {
   isOwner: boolean;
   organizationId: string;
+  organizationName: string;
 };
 
 export const Organization = async ({
   isOwner,
   organizationId,
+  organizationName,
 }: OrganizationProps) => {
   const supabase = createClient();
 
@@ -48,10 +50,15 @@ export const Organization = async ({
     <div>
       <div className="flex items-center mb-4">
         <h2 className="text-2xl font-semibold">Organisation management</h2>
-        <div className="ml-auto flex gap-2">
-          <Button>Invite members</Button>
-          <EditOrganization organizationId={organizationId} />
-        </div>
+        {isOwner && (
+          <div className="ml-auto flex gap-2">
+            <Button>Invite members</Button>
+            <EditOrganization
+              organizationId={organizationId}
+              organizationName={organizationName}
+            />
+          </div>
+        )}
       </div>
       {/* <div>invite users</div>
       <div>remove organization</div>
