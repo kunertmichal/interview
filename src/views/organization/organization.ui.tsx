@@ -38,7 +38,7 @@ export const OrganizationPage = async () => {
   const isOwner = user.id === organization?.owner_id;
 
   return (
-    <div>
+    <div className="">
       {organization ? (
         <Organization
           isOwner={isOwner}
