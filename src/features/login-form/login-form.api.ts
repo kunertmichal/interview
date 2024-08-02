@@ -1,6 +1,8 @@
+'use server';
+
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
-import { createClient } from '@/shared/utils/supabase/client';
+import { createClient } from '@/shared/utils/supabase/server';
 import { loginSchema } from './login-form.model';
 import { SubmissionResult } from '@conform-to/react';
 
