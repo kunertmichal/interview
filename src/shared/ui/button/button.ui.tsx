@@ -1,6 +1,6 @@
 import { cn } from '@/shared/utils/misc';
 import { cva, VariantProps } from 'class-variance-authority';
-import { ButtonHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, forwardRef, ReactElement } from 'react';
 
 const button = cva('button', {
   variants: {
@@ -25,22 +25,36 @@ const button = cva('button', {
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof button> {
+  asChild?: boolean;
   children: React.ReactNode;
 }
 
-export function Button({
-  children,
-  variant,
-  shape,
-  className,
-  ...props
-}: ButtonProps) {
-  return (
-    <button
-      className={cn(button({ variant, shape }), className, 'btn')}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-}
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ children, variant, shape, className, asChild = false, ...props }, ref) => {
+    const buttonClassName = cn(button({ variant, shape }), className, 'btn');
+
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children as ReactElement<any>, {
+        ...props,
+        className: cn(
+          buttonClassName,
+          (children.props as any).className,
+          'btn'
+        ),
+        ref: ref as any,
+      });
+    }
+
+    return (
+      <button
+        ref={ref}
+        className={cn(button({ variant, shape }), className, 'btn')}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+Button.displayName = 'Button';
