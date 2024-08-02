@@ -1,7 +1,7 @@
 'use server';
 
-import { LoginForm } from '@/widgets/login-form';
-import { SignUpForm } from '@/widgets/signup-form';
+import { LoginForm } from '@/features/login-form';
+import { SignUpForm } from '@/features/signup-form';
 
 export async function LoginPage() {
   return (

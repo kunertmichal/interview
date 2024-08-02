@@ -2,7 +2,7 @@ import { Button } from '@/shared/ui/button';
 import { Table } from '@/shared/ui/table';
 import { CellConfig } from '@/shared/ui/table/table.ui';
 import { createClient } from '@/shared/utils/supabase/server';
-import { EditOrganization } from '@/widgets/organization/edit-organization';
+import { EditOrganization } from '@/features/organization/edit-organization';
 
 export type OrganizationProps = {
   isOwner: boolean;

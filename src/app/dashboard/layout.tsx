@@ -3,8 +3,8 @@ import Link from 'next/link';
 import logoSvg from '@/app/logo.svg';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
-import { SignOut } from '@/widgets/sign-out';
-import { NotificationDropdown } from '@/widgets/notification-dropdown';
+import { SignOut } from '@/features/sign-out';
+import { NotificationDropdown } from '@/features/notification-dropdown';
 
 export default async function DashboardLayout({
   children,

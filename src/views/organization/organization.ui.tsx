@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
-import { CreateOrganization } from '@/widgets/organization/create-organization';
-import { Organization } from '@/features/organization';
+import { CreateOrganization } from '@/features/organization/create-organization';
+import { Organization } from '@/widgets/organization';
 
 export const OrganizationPage = async () => {
   const supabase = createClient();
