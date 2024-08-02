@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
 import { CreateOrganization } from '@/widgets/organization/create-organization';
+import { Organization } from '@/features/organization';
 
 export const OrganizationPage = async () => {
   const supabase = createClient();
@@ -21,7 +22,8 @@ export const OrganizationPage = async () => {
       organization_id,
       organization: organizations!profiles_organization_id_fkey (
         id,
-        name
+        name,
+        owner_id
       )
     `
     )
@@ -33,17 +35,15 @@ export const OrganizationPage = async () => {
   }
 
   const { organization_id, organization } = data || {};
+  const isOwner = user.id === organization?.owner_id;
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold">Organisation management</h2>
-      <div className="mt-8">
-        {organization_id ? (
-          <div>{JSON.stringify(organization)}</div>
-        ) : (
-          <CreateOrganization ownerId={user.id} />
-        )}
-      </div>
+      {organization_id ? (
+        <Organization isOwner={isOwner} organizationId={organization_id} />
+      ) : (
+        <CreateOrganization ownerId={user.id} />
+      )}
     </div>
   );
 };
