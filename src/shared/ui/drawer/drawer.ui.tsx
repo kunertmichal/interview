@@ -37,7 +37,7 @@ export const Drawer = ({
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <div className="bg-base-200 text-base-content min-h-full p-4">
+        <div className="bg-base-200 text-base-content min-h-full py-6 px-8">
           {children}
         </div>
       </div>

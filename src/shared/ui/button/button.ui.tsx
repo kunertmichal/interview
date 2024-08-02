@@ -12,6 +12,10 @@ const button = cva('button', {
       ghost: 'btn-ghost',
       link: 'btn-link',
     },
+    size: {
+      sm: 'btn-sm',
+      md: 'btn-md',
+    },
     shape: {
       square: 'btn-square',
       circle: 'btn-circle',
@@ -30,27 +34,26 @@ export interface ButtonProps
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, variant, shape, className, asChild = false, ...props }, ref) => {
-    const buttonClassName = cn(button({ variant, shape }), className, 'btn');
+  (
+    { children, variant, shape, size, className, asChild = false, ...props },
+    ref
+  ) => {
+    const buttonClassName = cn(
+      button({ variant, shape, size }),
+      className,
+      'btn'
+    );
 
     if (asChild && React.isValidElement(children)) {
       return React.cloneElement(children as ReactElement<any>, {
         ...props,
-        className: cn(
-          buttonClassName,
-          (children.props as any).className,
-          'btn'
-        ),
+        className: buttonClassName,
         ref: ref as any,
       });
     }
 
     return (
-      <button
-        ref={ref}
-        className={cn(button({ variant, shape }), className, 'btn')}
-        {...props}
-      >
+      <button ref={ref} className={buttonClassName} {...props}>
         {children}
       </button>
     );
