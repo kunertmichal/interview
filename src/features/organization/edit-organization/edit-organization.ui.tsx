@@ -3,6 +3,7 @@ import { Drawer } from '@/shared/ui/drawer';
 import { Settings } from 'lucide-react';
 import { Rename } from './rename/rename.ui';
 import { DeleteOrganization } from './delete';
+import { H2 } from '@/shared/ui/text';
 
 export type EditOrganizationProps = {
   organizationId: string;
@@ -26,7 +27,7 @@ export const EditOrganization = ({
       )}
     >
       <div className="flex flex-col gap-8">
-        <h3 className="text-3xl font-semibold text-white">Edit Organization</h3>
+        <H2>Edit Organization</H2>
         <Rename organizationId={organizationId} />
         <DeleteOrganization
           organizationId={organizationId}

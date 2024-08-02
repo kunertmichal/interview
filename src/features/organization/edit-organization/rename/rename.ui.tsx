@@ -8,6 +8,7 @@ import { FormInput } from '@/shared/ui/form-input';
 import { rename } from './rename.api';
 import { renameSchema } from './rename.model';
 import { Alert } from '@/shared/ui/alert';
+import { H3 } from '@/shared/ui/text';
 
 export type RenameProps = {
   organizationId: string;
@@ -28,7 +29,7 @@ export const Rename = ({ organizationId }: RenameProps) => {
 
   return (
     <div>
-      <h3 className="text-xl font-semibold text-white">Edit</h3>
+      <H3>Rename</H3>
       <p className="text-sm mb-4">Change the name of your organization</p>
       {lastResult?.status === 'error' && lastResult?.error && (
         <Alert variant="error" className="mb-4">

@@ -3,6 +3,7 @@ import { Table } from '@/shared/ui/table';
 import { CellConfig } from '@/shared/ui/table/table.ui';
 import { createClient } from '@/shared/utils/supabase/server';
 import { EditOrganization } from '@/features/organization/edit-organization';
+import { H2 } from '@/shared/ui/text';
 
 export type OrganizationProps = {
   isOwner: boolean;
@@ -48,8 +49,8 @@ export const Organization = async ({
 
   return (
     <div>
-      <div className="flex items-center mb-4">
-        <h2 className="text-2xl font-semibold">Organisation management</h2>
+      <div className="flex items-center mb-8">
+        <H2>Organization {organizationName}</H2>
         {isOwner && (
           <div className="ml-auto flex gap-2">
             <Button>Invite members</Button>
@@ -64,7 +65,6 @@ export const Organization = async ({
       <div>remove organization</div>
       <div>rename organization</div>}
       <div>members count: {membersCount}</div> */}
-      {isOwner.toString()}
       {error && <div>{error.message}</div>}
       <Table
         headings={tableHeadings}
