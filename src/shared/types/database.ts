@@ -72,6 +72,55 @@ export type Database = {
           },
         ];
       };
+      organization_invites: {
+        Row: {
+          created_at: string;
+          id: string;
+          organization_id: string;
+          receiver_id: string;
+          sender_id: string;
+          status: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          organization_id?: string;
+          receiver_id?: string;
+          sender_id?: string;
+          status: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          organization_id?: string;
+          receiver_id?: string;
+          sender_id?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'organization_invites_organization_id_fkey';
+            columns: ['organization_id'];
+            isOneToOne: false;
+            referencedRelation: 'organizations';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'organization_invites_receiver_id_fkey';
+            columns: ['receiver_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'organization_invites_sender_id_fkey';
+            columns: ['sender_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       organizations: {
         Row: {
           created_at: string;
@@ -154,6 +203,17 @@ export type Database = {
           owner_id: string;
         };
         Returns: string;
+      };
+      create_organization_invite_and_notification: {
+        Args: {
+          sender_id: string;
+          receiver_id: string;
+          organization_id: string;
+          status: string;
+          type: string;
+          content: string;
+        };
+        Returns: undefined;
       };
     };
     Enums: {

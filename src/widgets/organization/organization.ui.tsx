@@ -1,8 +1,8 @@
-import { Button } from '@/shared/ui/button';
 import { Table } from '@/shared/ui/table';
 import { CellConfig } from '@/shared/ui/table/table.ui';
 import { createClient } from '@/shared/utils/supabase/server';
 import { EditOrganization } from '@/features/organization/edit-organization';
+import { InviteToOrganization } from '@/features/organization/invite-to-organization';
 import { H2 } from '@/shared/ui/text';
 
 export type OrganizationProps = {
@@ -53,7 +53,7 @@ export const Organization = async ({
         <H2>Organization {organizationName}</H2>
         {isOwner && (
           <div className="ml-auto flex gap-2">
-            <Button>Invite members</Button>
+            <InviteToOrganization organizationId={organizationId} />
             <EditOrganization
               organizationId={organizationId}
               organizationName={organizationName}
@@ -61,10 +61,6 @@ export const Organization = async ({
           </div>
         )}
       </div>
-      {/* <div>invite users</div>
-      <div>remove organization</div>
-      <div>rename organization</div>}
-      <div>members count: {membersCount}</div> */}
       {error && <div>{error.message}</div>}
       <Table
         headings={tableHeadings}

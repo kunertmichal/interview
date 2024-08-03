@@ -3,39 +3,43 @@
 import { useFormState } from 'react-dom';
 import { useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { deleteSchema } from './delete.model';
-import { deleteOrganization } from './delete.api';
-import { FormInput } from '@/shared/ui/form-input';
 import { Button } from '@/shared/ui/button';
+import { Drawer } from '@/shared/ui/drawer';
+import { H2, P } from '@/shared/ui/text';
+import { inviteToOrganizationSchema, inviteToOrganization } from './';
+import { FormInput } from '@/shared/ui/form-input';
 import { Alert } from '@/shared/ui/alert';
-import { H3, P } from '@/shared/ui/text';
 
-export type DeleteOrganizationProps = {
+export type InviteToOrganization = {
   organizationId: string;
-  organizationName: string;
 };
 
-export const DeleteOrganization = ({
+export const InviteToOrganization = ({
   organizationId,
-  organizationName,
-}: DeleteOrganizationProps) => {
-  const [lastResult, action] = useFormState(deleteOrganization, undefined);
+}: InviteToOrganization) => {
+  const [lastResult, action] = useFormState(inviteToOrganization, undefined);
   const [form, fields] = useForm({
     lastResult,
-
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: deleteSchema });
+      return parseWithZod(formData, { schema: inviteToOrganizationSchema });
     },
-
     shouldValidate: 'onBlur',
     shouldRevalidate: 'onInput',
   });
 
   return (
-    <div>
-      <H3>Delete</H3>
+    <Drawer
+      id="invite-to-organization"
+      variant="right"
+      renderButton={(id) => (
+        <Button asChild>
+          <label htmlFor={id}>Invite members</label>
+        </Button>
+      )}
+    >
+      <H2>Invite members</H2>
       <P className="mb-4">
-        To delete your organization, provide its name below and confirm
+        Provide the email address of the member you want to invite
       </P>
       {lastResult?.status === 'error' && lastResult?.error && (
         <Alert variant="error" className="mb-4">
@@ -46,25 +50,20 @@ export const DeleteOrganization = ({
         <div className="flex gap-2">
           <FormInput
             inputSize="sm"
-            key={fields.confirmName.key}
-            name={fields.confirmName.name}
-            errors={fields.confirmName.errors?.join(', ')}
-          />
-          <input
-            type="hidden"
-            name={fields.organizationName.name}
-            value={organizationName}
+            key={fields.email.key}
+            name={fields.email.name}
+            errors={fields.email.errors?.join(', ')}
           />
           <input
             type="hidden"
             name={fields.organizationId.name}
             value={organizationId}
           />
-          <Button type="submit" size="sm" variant="error">
-            Delete
+          <Button size="sm" type="submit">
+            Send
           </Button>
         </div>
       </form>
-    </div>
+    </Drawer>
   );
 };

@@ -41,7 +41,7 @@ describe('Drawer', () => {
       </Drawer>
     );
 
-    expect(container.firstElementChild?.className).toContain('drawer-end');
+    expect(container.querySelector('.drawer.drawer-end')).toBeTruthy();
   });
 
   it('uses custom className when provided', () => {
@@ -59,6 +59,6 @@ describe('Drawer', () => {
       </Drawer>
     );
 
-    expect(container.firstElementChild?.className).toContain('custom-class');
+    expect(container.querySelector('.custom-class')).toBeTruthy();
   });
 });

@@ -13,7 +13,7 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
   const [data, setData] = useState<Array<TNotification>>([]);
   const [error, setError] = useState<any>(null);
 
-  const canDisplayNotifications = data && !error;
+  const canDisplayNotifications = data && data.length > 0 && !error;
   const emptyState = data && !error && data.length === 0;
   const hasUnreadNotifications = data?.some(
     (notification) => !notification.is_read
