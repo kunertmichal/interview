@@ -1,11 +1,11 @@
 'use server';
 
 import { parseWithZod } from '@conform-to/zod';
-import { createClient } from '@/shared/utils/supabase/server';
-import { inviteToOrganizationSchema } from './';
 import { SubmissionResult } from '@conform-to/react';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/shared/utils/supabase/server';
+import { inviteToOrganizationSchema } from './';
 
 export async function inviteToOrganization(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -91,6 +91,7 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
       sender_id: userData.user.id,
       receiver_id: invitedUser.id,
       organization_id: organizationId,
+      user_id: invitedUser.id,
       content: `You have been invited to join ${organization.name}`,
       status: 'pending',
       type: 'organization_invite',

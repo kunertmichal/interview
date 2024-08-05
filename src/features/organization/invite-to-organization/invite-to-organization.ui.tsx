@@ -41,6 +41,11 @@ export const InviteToOrganization = ({
       <P className="mb-4">
         Provide the email address of the member you want to invite
       </P>
+      {lastResult?.status === 'success' && (
+        <Alert variant="success" className="mb-4">
+          User with email address {fields.email.value} was successfully invited
+        </Alert>
+      )}
       {lastResult?.status === 'error' && lastResult?.error && (
         <Alert variant="error" className="mb-4">
           {lastResult.error.form}

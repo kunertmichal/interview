@@ -42,7 +42,12 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
       .channel('notifications')
       .on(
         'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications' },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${userId}`,
+        },
         handleInserts
       )
       .subscribe();
