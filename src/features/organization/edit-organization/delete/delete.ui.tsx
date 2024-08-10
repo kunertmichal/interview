@@ -8,7 +8,7 @@ import { deleteOrganization } from './delete.api';
 import { FormInput } from '@/shared/ui/form-input';
 import { Button } from '@/shared/ui/button';
 import { Alert } from '@/shared/ui/alert';
-import { H3 } from '@/shared/ui/text';
+import { H3, P } from '@/shared/ui/text';
 
 export type DeleteOrganizationProps = {
   organizationId: string;
@@ -34,9 +34,9 @@ export const DeleteOrganization = ({
   return (
     <div>
       <H3>Delete</H3>
-      <p className="text-sm mb-4">
+      <P className="mb-4">
         To delete your organization, provide its name below and confirm
-      </p>
+      </P>
       {lastResult?.status === 'error' && lastResult?.error && (
         <Alert variant="error" className="mb-4">
           {lastResult.error.form}

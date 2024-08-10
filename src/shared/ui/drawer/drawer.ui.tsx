@@ -28,17 +28,19 @@ export const Drawer = ({
   variant,
 }: DrawerProps) => {
   return (
-    <div className={cn(drawer({ variant }), className)}>
-      <input id={id} type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">{renderButton(id)}</div>
-      <div className="drawer-side z-10">
-        <label
-          htmlFor={id}
-          aria-label="close sidebar"
-          className="drawer-overlay"
-        ></label>
-        <div className="bg-base-200 text-base-content min-h-full py-6 px-8">
-          {children}
+    <div>
+      <div className={cn(drawer({ variant }), className)}>
+        <input id={id} type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content">{renderButton(id)}</div>
+        <div className="drawer-side z-10">
+          <label
+            htmlFor={id}
+            aria-label="close sidebar"
+            className="drawer-overlay"
+          ></label>
+          <div className="bg-base-200 text-base-content min-h-full py-6 px-8">
+            {children}
+          </div>
         </div>
       </div>
     </div>

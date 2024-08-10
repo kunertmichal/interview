@@ -16,7 +16,7 @@ export const EditOrganization = ({
 }: EditOrganizationProps) => {
   return (
     <Drawer
-      id="drawer"
+      id="edit-organization"
       variant="right"
       renderButton={(id) => (
         <Button asChild variant="secondary" shape="square">
