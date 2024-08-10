@@ -21,7 +21,7 @@ export default async function DashboardLayout({
   return (
     <div className="min-h-screen">
       <nav className="flex">
-        <div className="container flex gap-4 mx-auto py-4 px-8 text-lg">
+        <div className="container flex mx-auto py-4 px-8 gap-4 text-lg">
           <span className="flex items-center">
             <Image src={logoSvg} alt="Logo" width={32} height={32} />
           </span>
@@ -33,8 +33,10 @@ export default async function DashboardLayout({
               <Link href="/dashboard/organization">Organization</Link>
             </li>
           </ul>
-          <SignOut />
-          <NotificationDropdown userId={data.user.id} />
+          <div className="flex items-center">
+            <SignOut />
+            <NotificationDropdown userId={data.user.id} />
+          </div>
         </div>
       </nav>
       <div className="container mx-auto p-8">{children}</div>
