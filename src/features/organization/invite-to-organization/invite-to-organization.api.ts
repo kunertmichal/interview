@@ -73,6 +73,7 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     .select('*')
     .eq('receiver_id', invitedUser.id)
     .eq('organization_id', organizationId)
+    .eq('status', 'pending')
     .single();
 
   if (invitation) {

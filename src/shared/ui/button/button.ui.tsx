@@ -2,7 +2,7 @@ import { cn } from '@/shared/utils/misc';
 import { cva, VariantProps } from 'class-variance-authority';
 import React, { ButtonHTMLAttributes, forwardRef, ReactElement } from 'react';
 
-const button = cva('button', {
+const button = cva('btn', {
   variants: {
     variant: {
       primary: 'btn-primary',
@@ -38,11 +38,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     { children, variant, shape, size, className, asChild = false, ...props },
     ref
   ) => {
-    const buttonClassName = cn(
-      button({ variant, shape, size }),
-      className,
-      'btn'
-    );
+    const buttonClassName = cn(button({ variant, shape, size }), className);
 
     if (asChild && React.isValidElement(children)) {
       return React.cloneElement(children as ReactElement<any>, {

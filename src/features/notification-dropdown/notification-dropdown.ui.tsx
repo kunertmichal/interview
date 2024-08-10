@@ -4,7 +4,10 @@ import { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { createClient } from '@/shared/utils/supabase/client';
-import { RealtimePostgresInsertPayload } from '@supabase/supabase-js';
+import {
+  RealtimePostgresInsertPayload,
+  RealtimePostgresUpdatePayload,
+} from '@supabase/supabase-js';
 import { NotificationItem } from './notification-item.ui';
 
 export const NotificationDropdown = ({ userId }: { userId: string }) => {
@@ -22,7 +25,23 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
   const handleInserts = (
     payload: RealtimePostgresInsertPayload<TNotification>
   ) => {
+    console.log('handleInserts', payload);
+
     setData((prev) => [payload.new, ...prev]);
+  };
+
+  const handleUpdates = (
+    payload: RealtimePostgresUpdatePayload<TNotification>
+  ) => {
+    console.log('handleUpdates', payload);
+
+    setData((prev) =>
+      prev
+        .map((notification) =>
+          notification.id === payload.new.id ? payload.new : notification
+        )
+        .filter((notification) => !notification.is_read)
+    );
   };
 
   useEffect(() => {
@@ -30,6 +49,8 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
       .from('notifications')
       .select('*')
       .eq('user_id', userId)
+      .eq('is_read', false)
+      .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (error) {
           setError(error);
@@ -50,10 +71,20 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
         },
         handleInserts
       )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${userId}`,
+        },
+        handleUpdates
+      )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
   }, [supabase, userId]);
 
@@ -77,17 +108,14 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
       )}
 
       {canDisplayNotifications && (
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu bg-base-100 rounded-box z-[1] w-64 p-2 shadow"
-        >
+        <div className="dropdown-content menu bg-base-100 rounded-box z-[1] w-72 py-2 px-4 shadow space-y-2">
           {data?.map((notification) => (
             <NotificationItem
               key={notification.id}
               notification={notification}
             />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
