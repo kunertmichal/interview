@@ -46,7 +46,7 @@ export const OrganizationPage = async () => {
           organizationName={organization.name}
         />
       ) : (
-        <CreateOrganization ownerId={user.id} />
+        <CreateOrganization />
       )}
     </div>
   );

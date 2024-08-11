@@ -1,13 +1,20 @@
 'use server';
 
+import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
 import { parseWithZod } from '@conform-to/zod';
 import { createOrganizationSchema } from './create-organization.model';
-import { SubmissionResult } from '@conform-to/react';
 import { revalidatePath } from 'next/cache';
+import { sendFormResult } from '@/shared/utils/form-result';
+import { logger } from '@/shared/utils/logger';
 
 export async function createOrganization(_: unknown, formData: FormData) {
   const supabase = createClient();
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userData) {
+    redirect('/login');
+  }
 
   const submission = parseWithZod(formData, {
     schema: createOrganizationSchema,
@@ -19,26 +26,18 @@ export async function createOrganization(_: unknown, formData: FormData) {
 
   const data = {
     name: submission.value.name,
-    ownerId: submission.value.ownerId,
   };
 
   const { error } = await supabase.rpc('create_organization_and_assign', {
     name: data.name,
-    owner_id: data.ownerId,
+    owner_id: userData.user.id,
   });
 
   if (error) {
-    console.log(error);
-    return {
-      status: 'error',
-      error: {
-        form: ['Unable to create organisation'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(error);
+    return sendFormResult('error', ['Unable to create organisation']);
   } else {
     revalidatePath('/dashboard/organisation');
-    return {
-      status: 'success',
-    } as SubmissionResult<string[]>;
+    return sendFormResult('success');
   }
 }

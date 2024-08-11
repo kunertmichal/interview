@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
 import { createClient } from '@/shared/utils/supabase/server';
 import { loginSchema } from './login-form.model';
-import { SubmissionResult } from '@conform-to/react';
+import { sendFormResult } from '@/shared/utils/form-result';
 
 export async function login(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -25,12 +25,7 @@ export async function login(_: unknown, formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Invalid credentials'],
-      },
-    } as SubmissionResult<string[]>;
+    return sendFormResult('error', ['Invalid credentials']);
   }
 
   redirect('/dashboard');

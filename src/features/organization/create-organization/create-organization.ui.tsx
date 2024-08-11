@@ -9,7 +9,7 @@ import { FormInput } from '@/shared/ui/form-input';
 import { Button } from '@/shared/ui/button';
 import { Alert } from '@/shared/ui/alert';
 
-export const CreateOrganization = ({ ownerId }: { ownerId: string }) => {
+export const CreateOrganization = () => {
   const [lastResult, action] = useFormState(createOrganization, undefined);
   const [form, fields] = useForm({
     lastResult,
@@ -36,12 +36,6 @@ export const CreateOrganization = ({ ownerId }: { ownerId: string }) => {
           name={fields.name.name}
           defaultValue={fields.name.initialValue}
           errors={fields.name.errors?.join(', ')}
-        />
-        <input
-          type="hidden"
-          key={fields.ownerId.key}
-          name={fields.ownerId.name}
-          value={ownerId}
         />
         <Button type="submit" className="mt-4">
           Create

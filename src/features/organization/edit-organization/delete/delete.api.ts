@@ -3,8 +3,9 @@
 import { createClient } from '@/shared/utils/supabase/server';
 import { deleteSchema } from './delete.model';
 import { parseWithZod } from '@conform-to/zod';
-import { SubmissionResult } from '@conform-to/react';
 import { revalidatePath } from 'next/cache';
+import { sendFormResult } from '@/shared/utils/form-result';
+import { logger } from '@/shared/utils/logger';
 
 export async function deleteOrganization(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -26,22 +27,12 @@ export async function deleteOrganization(_: unknown, formData: FormData) {
     .single();
 
   if (fetchError || !organization) {
-    console.log(fetchError);
-    return {
-      status: 'error',
-      error: {
-        form: ['Organization not found'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(fetchError);
+    return sendFormResult('error', ['Organization not found']);
   }
 
   if (organization.name !== organizationName) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Organization name mismatch'],
-      },
-    } as SubmissionResult<string[]>;
+    return sendFormResult('error', ['Organization name mismatch']);
   }
 
   const { error: deleteError } = await supabase
@@ -50,17 +41,10 @@ export async function deleteOrganization(_: unknown, formData: FormData) {
     .eq('id', organizationId);
 
   if (deleteError) {
-    console.log(deleteError);
-    return {
-      status: 'error',
-      error: {
-        form: ['Unable to rename organisation'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(deleteError);
+    return sendFormResult('error', ['Unable to delete organisation']);
   } else {
     revalidatePath('/organization');
-    return {
-      status: 'success',
-    } as SubmissionResult<string[]>;
+    return sendFormResult('success');
   }
 }

@@ -2,9 +2,10 @@
 
 import { redirect } from 'next/navigation';
 import { parseWithZod } from '@conform-to/zod';
-import { SubmissionResult } from '@conform-to/react';
 import { createClient } from '@/shared/utils/supabase/server';
 import { signupSchema } from './signup-form.model';
+import { logger } from '@/shared/utils/logger';
+import { sendFormResult } from '@/shared/utils/form-result';
 
 export async function signup(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -30,13 +31,8 @@ export async function signup(_: unknown, formData: FormData) {
   });
 
   if (error) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Unable to create account'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(error);
+    return sendFormResult('error', ['Unable to create account']);
   }
-
   redirect('/dashboard');
 }

@@ -5,8 +5,8 @@ import { revalidatePath } from 'next/cache';
 import { parseWithZod } from '@conform-to/zod';
 import { createClient } from '@/shared/utils/supabase/server';
 import { acceptInvitationSchema } from './accept-invitation.model';
-import { SubmissionResult } from '@conform-to/react';
 import { logger } from '@/shared/utils/logger';
+import { sendFormResult } from '@/shared/utils/form-result';
 
 export async function handleOrganizationInvite(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -28,12 +28,7 @@ export async function handleOrganizationInvite(_: unknown, formData: FormData) {
 
   if (error) {
     logger.error(error);
-    return {
-      status: 'error',
-      error: {
-        form: ['Unable to accept/decline invitation'],
-      },
-    } as SubmissionResult<string[]>;
+    return sendFormResult('error', ['Unable to accept/decline invitation']);
   } else {
     revalidatePath('/dashboard/organization');
     redirect('/dashboard/organization');

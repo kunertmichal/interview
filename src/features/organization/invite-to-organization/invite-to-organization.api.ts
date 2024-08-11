@@ -1,11 +1,12 @@
 'use server';
 
 import { parseWithZod } from '@conform-to/zod';
-import { SubmissionResult } from '@conform-to/react';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/shared/utils/supabase/server';
 import { inviteToOrganizationSchema } from './';
+import { logger } from '@/shared/utils/logger';
+import { sendFormResult } from '@/shared/utils/form-result';
 
 export async function inviteToOrganization(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -33,12 +34,8 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     .single();
 
   if (!organization || organizationError) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Organization not found'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(organizationError);
+    return sendFormResult('error', ['Organization not found']);
   }
 
   // 2. check if invited user exists
@@ -49,22 +46,15 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     .single();
 
   if (!invitedUser || invitedUserError) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Invited user does not exist'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(invitedUserError);
+    return sendFormResult('error', ['Invited user not found']);
   }
 
   // 3. check if user is already a member
   if (invitedUser.organization_id) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Invited user is already a member of an organization'],
-      },
-    } as SubmissionResult<string[]>;
+    return sendFormResult('error', [
+      'User is already a member of an organization',
+    ]);
   }
 
   // 4. check if user is already invited
@@ -77,12 +67,7 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     .single();
 
   if (invitation) {
-    return {
-      status: 'error',
-      error: {
-        form: ['Invitation already sent'],
-      },
-    } as SubmissionResult<string[]>;
+    return sendFormResult('error', ['Invitation already sent']);
   }
 
   // 5. create invitation and notification
@@ -100,17 +85,10 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
   );
 
   if (error) {
-    console.log(error);
-    return {
-      status: 'error',
-      error: {
-        form: ['Unable to invite user'],
-      },
-    } as SubmissionResult<string[]>;
+    logger.error(error);
+    return sendFormResult('error', ['Unable to invite user']);
   } else {
     revalidatePath('/organization');
-    return {
-      status: 'success',
-    } as SubmissionResult<string[]>;
+    return sendFormResult('success');
   }
 }

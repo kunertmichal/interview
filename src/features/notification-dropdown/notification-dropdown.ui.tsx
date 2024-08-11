@@ -25,16 +25,12 @@ export const NotificationDropdown = ({ userId }: { userId: string }) => {
   const handleInserts = (
     payload: RealtimePostgresInsertPayload<TNotification>
   ) => {
-    console.log('handleInserts', payload);
-
     setData((prev) => [payload.new, ...prev]);
   };
 
   const handleUpdates = (
     payload: RealtimePostgresUpdatePayload<TNotification>
   ) => {
-    console.log('handleUpdates', payload);
-
     setData((prev) =>
       prev
         .map((notification) =>
