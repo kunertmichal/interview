@@ -6,10 +6,12 @@ import { cn } from '@/shared/utils/misc';
 const alert = cva('alert', {
   variants: {
     variant: {
-      success: 'alert-success',
-      error: 'alert-error',
-      warning: 'alert-warning',
-      info: 'alert-info',
+      success:
+        'alert-success border-2 border-success text-success bg-success/15',
+      error: 'alert-error border-2 border-error text-error bg-error/15',
+      warning:
+        'alert-warning border-2 border-warning text-warning bg-warning/15',
+      info: 'alert-info border-2 border-info text-info bg-info/15',
     },
   },
   defaultVariants: {
@@ -39,11 +41,7 @@ export const Alert = ({
   const Icon = variant ? icons[variant] : icons.info;
 
   return (
-    <div
-      role="alert"
-      className={cn('alert', alert({ variant }), className)}
-      {...props}
-    >
+    <div role="alert" className={cn(alert({ variant }), className)} {...props}>
       <Icon />
       <span>{children}</span>
     </div>
