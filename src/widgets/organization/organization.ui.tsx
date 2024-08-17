@@ -4,24 +4,28 @@ import { createClient } from '@/shared/utils/supabase/server';
 import { EditOrganization } from '@/features/organization/edit-organization';
 import { InviteToOrganization } from '@/features/organization/invite-to-organization';
 import { H2 } from '@/shared/ui/text';
+import { getUserOrRedirect } from '@/entities';
+import { hasUserRole } from '@/shared/utils/permissions';
 
 export type OrganizationProps = {
-  isOwner: boolean;
   organizationId: string;
   organizationName: string;
 };
 
 export const Organization = async ({
-  isOwner,
   organizationId,
   organizationName,
 }: OrganizationProps) => {
   const supabase = createClient();
 
+  const user = await getUserOrRedirect();
+
   const { data: allMembers, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('organization_id', organizationId);
+
+  const isOwner = await hasUserRole(user.id, 'organization_owner');
 
   const tableHeadings: Array<CellConfig> = [
     { value: 'Name', align: 'left' },

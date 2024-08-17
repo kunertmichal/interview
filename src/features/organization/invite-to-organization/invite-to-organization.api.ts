@@ -7,9 +7,18 @@ import { createClient } from '@/shared/utils/supabase/server';
 import { inviteToOrganizationSchema } from './';
 import { logger } from '@/shared/utils/logger';
 import { sendFormResult } from '@/shared/utils/form-result';
+import { getUserOrRedirect } from '@/entities';
+import { hasUserRole } from '@/shared/utils/permissions';
 
 export async function inviteToOrganization(_: unknown, formData: FormData) {
   const supabase = createClient();
+  const user = await getUserOrRedirect();
+
+  const isOwner = await hasUserRole(user.id, 'organization_owner');
+
+  if (!isOwner) {
+    return sendFormResult('error', ['Insufficient permissions']);
+  }
 
   const submission = parseWithZod(formData, {
     schema: inviteToOrganizationSchema,

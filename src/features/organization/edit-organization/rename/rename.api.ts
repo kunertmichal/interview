@@ -6,9 +6,18 @@ import { parseWithZod } from '@conform-to/zod';
 import { revalidatePath } from 'next/cache';
 import { sendFormResult } from '@/shared/utils/form-result';
 import { logger } from '@/shared/utils/logger';
+import { getUserOrRedirect } from '@/entities';
+import { hasUserRole } from '@/shared/utils/permissions';
 
 export async function rename(_: unknown, formData: FormData) {
   const supabase = createClient();
+  const user = await getUserOrRedirect();
+
+  const isOwner = await hasUserRole(user.id, 'organization_owner');
+
+  if (!isOwner) {
+    return sendFormResult('error', ['Insufficient permissions']);
+  }
 
   const submission = parseWithZod(formData, {
     schema: renameSchema,

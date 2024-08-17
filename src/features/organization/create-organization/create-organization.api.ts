@@ -29,7 +29,7 @@ export async function createOrganization(_: unknown, formData: FormData) {
   };
 
   const { error } = await supabase.rpc('create_organization_and_assign', {
-    name: data.name,
+    org_name: data.name,
     owner_id: userData.user.id,
   });
 
