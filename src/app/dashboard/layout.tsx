@@ -27,7 +27,7 @@ export default async function DashboardLayout({
           </span>
           <ul className="flex items-center gap-4 ml-auto">
             <li>
-              <Link href="/dashboard/team">Team</Link>
+              <Link href="/dashboard/teams">Teams</Link>
             </li>
             <li>
               <Link href="/dashboard/organization">Organization</Link>

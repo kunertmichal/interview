@@ -1,7 +1,7 @@
 import { createClient } from '@/shared/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
-export async function getUserOrRedirect() {
+export async function getUserOrRedirect(): Promise<TProfile> {
   const supabase = createClient();
   const {
     data: { user },
@@ -12,5 +12,15 @@ export async function getUserOrRedirect() {
     redirect('/login');
   }
 
-  return user;
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  if (profileError || !profile) {
+    redirect('/login');
+  }
+
+  return profile;
 }

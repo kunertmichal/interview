@@ -5,4 +5,6 @@ declare global {
   type TProfile = Tables<'profiles'>;
   type TOrganization = Tables<'organizations'>;
   type TNotification = Tables<'notifications'>;
+  type TTeam = Tables<'teams'>;
+  type TTeamMember = Tables<'team_members'>;
 }
