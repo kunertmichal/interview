@@ -3,3 +3,4 @@ find-dupe-locale.js
 node_modules
 .next
 out
+src/shared/types/database.ts
