@@ -57,7 +57,7 @@ export const Organization = async ({
         <H2>Organization {organizationName}</H2>
         {isOwner && (
           <div className="ml-auto flex gap-2">
-            <InviteToOrganization organizationId={organizationId} />
+            <InviteToOrganization />
             <EditOrganization
               organizationId={organizationId}
               organizationName={organizationName}

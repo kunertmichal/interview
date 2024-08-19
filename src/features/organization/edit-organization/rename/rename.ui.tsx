@@ -34,6 +34,11 @@ export const Rename = ({ organizationId }: RenameProps) => {
           {lastResult.error.form}
         </Alert>
       )}
+      {lastResult?.status === 'success' && lastResult?.error && (
+        <Alert variant="success" className="mb-4">
+          Organization name was successfully changed
+        </Alert>
+      )}
       <form id={form.id} onSubmit={form.onSubmit} action={action}>
         <div className="flex gap-2">
           <FormInput

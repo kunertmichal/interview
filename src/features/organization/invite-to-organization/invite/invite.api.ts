@@ -9,6 +9,7 @@ import { logger } from '@/shared/utils/logger';
 import { sendFormResult } from '@/shared/utils/form-result';
 import { getUserOrRedirect } from '@/entities';
 import { hasUserRole } from '@/shared/utils/permissions';
+import { getOrganizationByUserId } from '@/entities/organization';
 
 export async function inviteToOrganization(_: unknown, formData: FormData) {
   const supabase = createClient();
@@ -28,7 +29,7 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     return submission.reply();
   }
 
-  const { organizationId, email } = submission.value;
+  const { email } = submission.value;
   const { data: userData, error: userError } = await supabase.auth.getUser();
 
   if (userError || !userData) {
@@ -36,14 +37,9 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
   }
 
   // 1. check if organization exists
-  const { data: organization, error: organizationError } = await supabase
-    .from('organizations')
-    .select('*')
-    .eq('id', organizationId)
-    .single();
+  const organization = await getOrganizationByUserId(user.id);
 
-  if (!organization || organizationError) {
-    logger.error(organizationError);
+  if (!organization) {
     return sendFormResult('error', ['Organization not found']);
   }
 
@@ -71,7 +67,7 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     .from('organization_invites')
     .select('*')
     .eq('receiver_id', invitedUser.id)
-    .eq('organization_id', organizationId)
+    .eq('organization_id', organization.id)
     .eq('status', 'pending')
     .single();
 
@@ -85,7 +81,7 @@ export async function inviteToOrganization(_: unknown, formData: FormData) {
     {
       sender_id: userData.user.id,
       receiver_id: invitedUser.id,
-      organization_id: organizationId,
+      organization_id: organization.id,
       user_id: invitedUser.id,
       content: `You have been invited to join ${organization.name}`,
       status: 'pending',
