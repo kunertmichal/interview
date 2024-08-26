@@ -6,6 +6,7 @@ import { InviteToOrganization } from '@/features/organization/invite-to-organiza
 import { H2 } from '@/shared/ui/text';
 import { getUserOrRedirect } from '@/entities';
 import { hasUserRole } from '@/shared/utils/permissions';
+import { RemoveUser } from '@/features/organization/remove-user';
 
 export type OrganizationProps = {
   organizationId: string;
@@ -30,25 +31,33 @@ export const Organization = async ({
   const tableHeadings: Array<CellConfig> = [
     { value: 'Name', align: 'left' },
     { value: 'Email', align: 'left' },
-    { value: 'Actions', align: 'right' },
+    ...(isOwner ? [{ value: 'Actions', align: 'right' } as const] : []),
   ];
 
-  const rows: Array<CellConfig[]> =
+  const rows: Array<CellConfig<TProfile>[]> =
     allMembers?.map((member) => {
-      return [
+      const baseRow: CellConfig<TProfile>[] = [
         {
           value: `${member.first_name} ${member.last_name}`,
           align: 'left',
+          originalData: member,
         },
         {
           value: member.email,
           align: 'left',
-        },
-        {
-          value: 'actions',
-          align: 'right',
+          originalData: member,
         },
       ];
+
+      if (isOwner) {
+        baseRow.push({
+          value: 'actions',
+          align: 'right',
+          originalData: member,
+        });
+      }
+
+      return baseRow;
     }) ?? [];
 
   return (
@@ -66,12 +75,19 @@ export const Organization = async ({
         )}
       </div>
       {error && <div>{error.message}</div>}
-      <Table
+      <Table<TProfile>
         headings={tableHeadings}
         rows={rows}
-        renderCell={(value) =>
-          value === 'actions' ? <div>actions</div> : <div>{value}</div>
-        }
+        renderCell={(cellData) => {
+          if (cellData.value === 'actions') {
+            return user.id === cellData.originalData?.id ? (
+              <>-</>
+            ) : (
+              <RemoveUser userId={cellData.originalData!.id} />
+            );
+          }
+          return cellData.value;
+        }}
       />
     </div>
   );

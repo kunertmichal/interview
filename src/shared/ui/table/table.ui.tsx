@@ -1,12 +1,17 @@
-export type CellConfig = {
+export type CellConfig<T = any> = {
   value: string;
   align: 'left' | 'right' | 'center';
+  originalData?: T;
 };
 
-export type TableProps = {
+export type TableProps<T = any> = {
   headings?: CellConfig[];
-  rows?: Array<CellConfig[]>;
-  renderCell?: (value: string, index: number) => JSX.Element;
+  rows?: Array<CellConfig<T>[]>;
+  renderCell?: (
+    cellData: CellConfig<T>,
+    rowIndex: number,
+    cellIndex: number
+  ) => React.ReactNode;
 };
 
 const alignToCss = {
@@ -15,7 +20,7 @@ const alignToCss = {
   center: 'text-center',
 };
 
-export const Table = ({ headings, rows, renderCell }: TableProps) => {
+export function Table<T>({ headings, rows, renderCell }: TableProps<T>) {
   return (
     <div className="overflow-x-auto">
       <table className="table">
@@ -29,11 +34,13 @@ export const Table = ({ headings, rows, renderCell }: TableProps) => {
           </tr>
         </thead>
         <tbody>
-          {rows?.map((cell, colIndex) => (
-            <tr key={colIndex}>
-              {cell.map((cell, cellIndex: number) => (
+          {rows?.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, cellIndex) => (
                 <td key={cellIndex} className={alignToCss[cell.align]}>
-                  {renderCell ? renderCell(cell.value, cellIndex) : cell.value}
+                  {renderCell
+                    ? renderCell(cell, rowIndex, cellIndex)
+                    : cell.value}
                 </td>
               ))}
             </tr>
@@ -42,4 +49,4 @@ export const Table = ({ headings, rows, renderCell }: TableProps) => {
       </table>
     </div>
   );
-};
+}

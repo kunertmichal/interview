@@ -74,8 +74,8 @@ describe('Table', () => {
   });
 
   it('uses custom renderCell function when provided', () => {
-    const customRenderCell = vi.fn((value) => (
-      <span data-testid="custom-cell">{value.toUpperCase()}</span>
+    const customRenderCell = vi.fn((cell) => (
+      <span data-testid="custom-cell">{cell.value.toUpperCase()}</span>
     ));
     const cellsCount = tableData[0].length;
     render(

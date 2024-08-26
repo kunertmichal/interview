@@ -420,6 +420,12 @@ export type Database = {
         }
         Returns: undefined
       }
+      remove_user_from_organization: {
+        Args: {
+          user_id: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
